@@ -22,4 +22,4 @@ A custom Arduino robot arm project using SG90 servo motors, joystick control, an
 - Arduino UNO R3
 - SG90 Micro Servo Motors
 - SSD1306 128x64 OLED Display
-- Analog Joystick**
+- Analog Joystick
