@@ -1,5 +1,11 @@
-#include <Servo.h>
+#include <Servo.h> // Servo library
+#include <Adafruit_GFX.h> // Graphics library used for drawing text/shapes
+#include <Adafruit_SSD1306.h> // Library for controlling the SSD1306 OLED display
 
+#define SCREEN_WIDTH 128 
+#define SCREEN_HEIGHT 64
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 Servo baseServo;
 Servo armServo;
 Servo clawServo;
@@ -21,6 +27,7 @@ bool lastButtonState = HIGH;
 bool currentButtonState;
 bool clawMode = false;
 
+
 void setup() {
 baseServo.attach(9); //attaches the servo to pin 9
 armServo.attach(10);
@@ -29,7 +36,38 @@ pinMode(joystickButton, INPUT_PULLUP);
 baseServo.write(basePos); //Moves the servo to that point
 armServo.write(armPos);
 clawServo.write(clawPos);
+display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+Wire.setClock(400000);
 delay(100);
+}
+
+void showAngle(){
+display.clearDisplay();
+display.setTextSize(1);
+display.setTextColor(WHITE);
+display.setCursor(10,10);
+display.println("    Robot Arm");
+display.setCursor(5, 20);
+display.print("Base:");
+display.print(basePos);
+display.println(" degrees");
+display.setCursor(5, 30);
+display.print("Arm:");
+display.print(armPos);
+display.println(" degrees");
+display.setCursor(5, 40);
+display.print("Claw:");
+display.print(clawPos);
+display.println(" degrees");
+display.setCursor(5, 55);
+display.print("MODE: ");
+if (clawMode == true){
+  display.print("CLAW");
+}
+else{
+  display.print("ARM");
+}
+display.display();
 }
 
 void loop() {
@@ -38,8 +76,8 @@ if (lastButtonState == HIGH && currentButtonState == LOW) {
     clawMode = !clawMode;
     delay(50);
 }
+showAngle();
 lastButtonState = currentButtonState;
-
 joystickX = analogRead(A0);
 joystickY = analogRead(A1);
 if (!clawMode){
@@ -75,7 +113,6 @@ if (joystickY < (joystickCenter - deadZone)){ //down
   }
   armServo.write(armPos);
 }
-delay(10);
 }
   else{
     joystickY = analogRead(A1);
@@ -95,6 +132,5 @@ delay(10);
       }
       clawServo.write(clawPos);
     }
-delay(10);
 }
 }
