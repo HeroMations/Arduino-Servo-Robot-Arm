@@ -14,7 +14,7 @@ A custom Arduino robot arm project using SG90 servo motors, joystick control, an
 - [x] Parts ordered
 - [x] Single servo control
 - [x] OLED angle display
-- [ ] Two servo arm
+- [x] Two servo arm
 - [ ] Three servo arm with claw
 
 ## Hardware
