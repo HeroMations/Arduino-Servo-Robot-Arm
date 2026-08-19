@@ -2,6 +2,7 @@
 #include <Adafruit_GFX.h> // Graphics library used for drawing text/shapes
 #include <Adafruit_SSD1306.h> // Library for controlling the SSD1306 OLED display
 
+// OLED display dimensions
 #define SCREEN_WIDTH 128 
 #define SCREEN_HEIGHT 64
 
@@ -10,12 +11,12 @@ Servo baseServo;
 Servo armServo;
 Servo clawServo;
 
-int basePos = 90; // starting position
+int basePos = 90; // starting positions
 int armPos = 90;
 int clawPos = 90;
 int servoSpeed;
 
-
+// Joystick button and center calibration
 int joystickX;
 int joystickY;
 int joystickButton = 7;
@@ -23,25 +24,26 @@ int joystickCenter = 512;
 int deadZone = 100;
 int joystickDifference;
 
+// Button and control mode states
 bool lastButtonState = HIGH;
 bool currentButtonState;
 bool clawMode = false;
 
 
 void setup() {
-baseServo.attach(9); //attaches the servo to pin 9
+baseServo.attach(9); //attaches the servo to pins
 armServo.attach(10);
 clawServo.attach(11);
 pinMode(joystickButton, INPUT_PULLUP);
 baseServo.write(basePos); //Moves the servo to that point
 armServo.write(armPos);
 clawServo.write(clawPos);
-display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-Wire.setClock(400000);
+display.begin(SSD1306_SWITCHCAPVCC, 0x3C); 
+Wire.setClock(400000); // Increase the I2C communication speed
 delay(100);
 }
 
-void showAngle(){
+void showAngle(){ // Displays the current servo angles and control mode
 display.clearDisplay();
 display.setTextSize(1);
 display.setTextColor(WHITE);
@@ -80,7 +82,7 @@ showAngle();
 lastButtonState = currentButtonState;
 joystickX = analogRead(A0);
 joystickY = analogRead(A1);
-if (!clawMode){
+if (!clawMode){ // Switch between ARM and CLAW mode when the button is pressed
   if (joystickX < (joystickCenter - deadZone)){ //left
   joystickDifference = joystickCenter - joystickX;
   servoSpeed = map(joystickDifference, 0, 511, 0, 5); // Converts joystick strength from 0-511 into a servo movement speed of 0-5 
@@ -116,7 +118,7 @@ if (joystickY < (joystickCenter - deadZone)){ //down
 }
   else{
     joystickY = analogRead(A1);
-    if (joystickY > (joystickCenter + deadZone)){ //up
+    if (joystickY > (joystickCenter + deadZone)){ //up/closing
       joystickDifference = joystickY - joystickCenter;
       servoSpeed = map(joystickDifference, 0, 511, 0, 5);
       if (clawPos + servoSpeed <= 180){
@@ -124,7 +126,7 @@ if (joystickY < (joystickCenter - deadZone)){ //down
       }
       clawServo.write(clawPos);
     }
-    if (joystickY < (joystickCenter - deadZone)){ //down
+    if (joystickY < (joystickCenter - deadZone)){ //down/opening
       joystickDifference = joystickCenter - joystickY;
       servoSpeed = map(joystickDifference, 0, 511, 0, 5);
       if (clawPos - servoSpeed >= 0){
