@@ -33,6 +33,9 @@ A custom Arduino robot arm project using SG90 servo motors, joystick control, an
 https://youtu.be/sGa7yA_iKw8
 # Challenges/Limitations
 Claw grip: The claw initially had very little grip, especially with smooth or narrow objects. Foam was added to the gripping surfaces to improve friction, but some objects, such as pens, can still slip.
+
 Servo torque: The SG90 servos have limited torque, so the arm is mainly capable of handling lightweight objects. It can pick up objects such as tissues, bottle caps, and a small plastic container, but heavier objects are difficult to move.
+
 Base servo vibration: The base servo occasionally shakes while rotating, especially in one direction. This is likely caused by the weight of the arm and the mechanical load placed on the servo.
+
 OLED code: With the code checking the angle every loop to send to the OLED to show, it made the servo slower and little more clunky to move.
