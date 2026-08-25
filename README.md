@@ -25,6 +25,7 @@ A custom Arduino robot arm project using SG90 servo motors, joystick control, an
 - Analog Joystick
 
 ## Photos
+<img width="1160" height="1880" alt="image" src="https://github.com/user-attachments/assets/7991a875-43fc-4564-a660-e31a498a07f4" />
 
 ## Demo
 
